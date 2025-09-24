@@ -41,13 +41,22 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install dvc[s3]   # adapte ici: dvc[azure], dvc[gs] ou juste dvc selon ton remote
+          pip install dvc[s3]  # adapte si tu utilises Azure ou GCS
+
+      - name: Configure AWS credentials (for DVC remote)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Pull data from DVC remote
+        run: dvc pull
 
       - name: Run DVC pipeline
         env:
           MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
-        run: |
-          dvc repro
+        run: dvc repro
 
   build-and-push-ecr-image:
     name: Continuous Delivery
@@ -121,4 +130,3 @@ jobs:
       - name: Clean unused images and containers
         run: |
           docker system prune -af || true
-
