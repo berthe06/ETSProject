@@ -7,23 +7,17 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-<<<<<<< HEAD
-# .gitignore
-logparser/
-.env
-data/
-models/
-mlopsKeys.pem
-mlops_accessKeys.csv
-mlruns/
-reports/
-*.log
-*.csv
-*.pkl
-=======
->>>>>>> 2b6a88baf67940e80d1fc2d009a1e4297adb6a21
 .Python
 build/
+mlruns/
+models/
+/data/        
+!src/data/
+mlopsKeys.pem
+mlops_accessKeys.csv
+model_registry/
+logparser/
+reports/
 develop-eggs/
 dist/
 downloads/
@@ -39,15 +33,7 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-<<<<<<< HEAD
-ETSPROJECT/data/HDFS_results/
-ETSPROJECT/models/
-ETSPROJECT/data/HDFS.log
 MANIFEST
-    
-=======
-MANIFEST
->>>>>>> 2b6a88baf67940e80d1fc2d009a1e4297adb6a21
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -228,7 +214,3 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-<<<<<<< HEAD
-/model_registry
-=======
->>>>>>> 2b6a88baf67940e80d1fc2d009a1e4297adb6a21
