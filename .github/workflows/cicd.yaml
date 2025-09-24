@@ -25,9 +25,33 @@ jobs:
       - name: Run unit tests
         run: echo "Running unit tests"
 
+  mlops-pipeline:
+    name: Run DVC Pipeline
+    needs: integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install dvc[s3]   # adapte ici: dvc[azure], dvc[gs] ou juste dvc selon ton remote
+
+      - name: Run DVC pipeline
+        env:
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+        run: |
+          dvc repro
+
   build-and-push-ecr-image:
     name: Continuous Delivery
-    needs: integration
+    needs: mlops-pipeline
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
