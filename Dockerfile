@@ -1,17 +1,21 @@
-# Utilise une image officielle Python
 FROM python:3.11-slim
 
-# Crée un répertoire de travail
+# Set working directory
 WORKDIR /app
 
-# Copie les fichiers de dépendances
+# ✅ Installe git et autres dépendances nécessaires
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git gcc && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copie les dépendances Python
 COPY requirements.txt .
 
 # Installe les dépendances Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie tout le projet (sources, données, etc.)
+# Copie le reste du projet
 COPY . .
 
-# (Optionnel) Définit une commande de base si tu veux que ça lance une étape DVC automatiquement
-# CMD ["dvc", "repro"]
+# Commande par défaut (modifie si besoin)
+CMD ["python", "src/model/model_registration.py"]
