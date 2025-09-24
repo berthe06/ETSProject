@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install dvc[s3]  # adapte si tu utilises Azure ou GCS
+          pip install dvc[s3]
 
       - name: Configure AWS credentials (for DVC remote)
         uses: aws-actions/configure-aws-credentials@v2
@@ -49,6 +49,20 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Clean results before DVC pull
+        run: rm -f results/evaluation_metrics.json
+
+      - name: Verify no unexpected files in results/
+        run: |
+          if [ -d results ]; then
+            UNTRACKED=$(git ls-files --others --exclude-standard results)
+            if [ -n "$UNTRACKED" ]; then
+              echo "❌ Fichiers non suivis trouvés dans results/ :"
+              echo "$UNTRACKED"
+              exit 1
+            fi
+          fi
 
       - name: Pull data from DVC remote
         run: dvc pull
