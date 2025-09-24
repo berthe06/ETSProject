@@ -1,0 +1,64 @@
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+      - src/data/data_ingestion.py
+      - data/HDFS.log
+      - data/anomaly_label.csv
+    outs:
+      - data/HDFS_results/HDFS_train_enriched.csv
+      - data/HDFS_results/HDFS_valid_enriched.csv
+      - data/HDFS_results/HDFS_test_enriched.csv
+
+  data_preprocessing:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+      - src/data/data_preprocessing.py
+      - data/anomaly_label.csv
+      - data/HDFS_results/HDFS_train.log_templates.json
+      - data/HDFS_results/HDFS_valid.log_templates.json
+      - data/HDFS_results/HDFS_test.log_templates.json
+      - data/HDFS_results/HDFS_train.log_structured.csv
+      - data/HDFS_results/HDFS_valid.log_structured.csv
+      - data/HDFS_results/HDFS_test.log_structured.csv
+    outs:
+      - data/HDFS_results/HDFS_train.log_structured_blk.csv
+      - data/HDFS_results/HDFS_valid.log_structured_blk.csv
+      - data/HDFS_results/HDFS_test.log_structured_blk.csv
+      - data/HDFS_results/HDFS_train.log_structured_blk_sequence.csv
+      - data/HDFS_results/HDFS_valid.log_structured_blk_sequence.csv
+      - data/HDFS_results/HDFS_test.log_structured_blk_sequence.csv
+      - data/HDFS_results/Event_occurence_matrix_HDFS_train.csv
+      - data/HDFS_results/Event_occurence_matrix_HDFS_valid.csv
+      - data/HDFS_results/Event_occurence_matrix_HDFS_test.csv
+      - data/HDFS_results/preprocessed/train_processed.csv
+      - data/HDFS_results/preprocessed/test_processed.csv
+
+  model_building:
+    cmd: python src/model/model_building.py
+    deps:
+      - src/model/model_building.py
+      - data/HDFS_results/preprocessed/train_processed.csv
+      - data/HDFS_results/preprocessed/test_processed.csv
+    outs:
+      - models/random_forest.pkl
+      - models/xgboost_model.pkl
+
+  model_evaluation:
+    cmd: python src/model/model_evaluation.py
+    deps:
+      - src/model/model_evaluation.py
+      - data/HDFS_results/preprocessed/test_processed.csv
+      - models/random_forest.pkl
+    outs:
+      - results/evaluation_metrics.json
+    params: []
+
+
+  model_registration:
+    cmd: python src/model/model_registration.py
+    deps:
+      - src/model/model_registration.py
+      - models/random_forest.pkl
+    outs:
+      - model_registry/
