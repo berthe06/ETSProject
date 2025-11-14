@@ -1,0 +1,27 @@
+# Parsing des logs
+drain3
+git+https://github.com/logpai/logparser.git
+
+# Traitement de données
+pandas
+numpy
+tqdm
+matplotlib
+scikit-learn
+
+# Gestion des modèles et tracking
+mlflow
+joblib
+
+# Chargement des variables d’environnement
+python-dotenv
+
+# API Flask (si tu utilises flaskapi/)
+flask
+
+# DVC (si tu veux ajouter le suivi des données plus tard)
+# dvc[s3]
+
+
+flask
+python-dotenv

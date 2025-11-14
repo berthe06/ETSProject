@@ -1,0 +1,207 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: data/HDFS.log
+      hash: md5
+      md5: 203a5f50203972827ec72f9b949b9dd7
+      size: 1577982906
+    - path: data/anomaly_label.csv
+      hash: md5
+      md5: 464df04e2597a0ded1a6ca492565a188
+      size: 18637554
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: 0ee1c49cced675ddee6a19f86a17b0cd
+      size: 5377
+    outs:
+    - path: data/HDFS_results/HDFS_test_enriched.csv
+      hash: md5
+      md5: ec8495f495c6c0d6096b3ff9b86ca697
+      size: 666322523
+    - path: data/HDFS_results/HDFS_train_enriched.csv
+      hash: md5
+      md5: 7e0255f1ff38199647627e40975b634c
+      size: 1979084008
+    - path: data/HDFS_results/HDFS_valid_enriched.csv
+      hash: md5
+      md5: dfae8fb2d0895197a7c98d58e11ea1b8
+      size: 665911246
+  data_preprocessing:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+    - path: data/HDFS_results/HDFS_test.log_structured.csv
+      hash: md5
+      md5: 260569f812283e39ef8d673b10db5238
+      size: 611254797
+    - path: data/HDFS_results/HDFS_test.log_templates.json
+      hash: md5
+      md5: 17888b1df539a037d281335614911e68
+      size: 580
+    - path: data/HDFS_results/HDFS_train.log_structured.csv
+      hash: md5
+      md5: e24487120544de69e827afa059f028d7
+      size: 1811575212
+    - path: data/HDFS_results/HDFS_train.log_templates.json
+      hash: md5
+      md5: a0a5cf203f14e17c286565811a876443
+      size: 846
+    - path: data/HDFS_results/HDFS_valid.log_structured.csv
+      hash: md5
+      md5: ddb0f97c43317a3115f1f8a5dd57fc72
+      size: 611579201
+    - path: data/HDFS_results/HDFS_valid.log_templates.json
+      hash: md5
+      md5: b6ffb66b9780542e9837fb4eeb81d49a
+      size: 846
+    - path: data/anomaly_label.csv
+      hash: md5
+      md5: 464df04e2597a0ded1a6ca492565a188
+      size: 18637554
+    - path: src/data/data_preprocessing.py
+      hash: md5
+      md5: 1ee312de659fcb47e8c157ac2c75b2cb
+      size: 8630
+    outs:
+    - path: data/HDFS_results/Event_occurence_matrix_HDFS_test.csv
+      hash: md5
+      md5: ceffc99b07d810c9d38d816a9568b3c9
+      size: 19051990
+    - path: data/HDFS_results/Event_occurence_matrix_HDFS_train.csv
+      hash: md5
+      md5: 2af09f5f943ade66a886c7a93ecbf96d
+      size: 35327815
+    - path: data/HDFS_results/Event_occurence_matrix_HDFS_valid.csv
+      hash: md5
+      md5: 1a56535208f2f020f7cf58903910f86b
+      size: 20138269
+    - path: data/HDFS_results/HDFS_test.log_structured_blk.csv
+      hash: md5
+      md5: ec8495f495c6c0d6096b3ff9b86ca697
+      size: 666322523
+    - path: data/HDFS_results/HDFS_test.log_structured_blk_sequence.csv
+      hash: md5
+      md5: ccc34c695697734e8eb75da25b492d07
+      size: 35302823
+    - path: data/HDFS_results/HDFS_train.log_structured_blk.csv
+      hash: md5
+      md5: 7e0255f1ff38199647627e40975b634c
+      size: 1979084008
+    - path: data/HDFS_results/HDFS_train.log_structured_blk_sequence.csv
+      hash: md5
+      md5: eb190cfcf961407daa4a1477c6eac975
+      size: 96988058
+    - path: data/HDFS_results/HDFS_valid.log_structured_blk.csv
+      hash: md5
+      md5: dfae8fb2d0895197a7c98d58e11ea1b8
+      size: 665911246
+    - path: data/HDFS_results/HDFS_valid.log_structured_blk_sequence.csv
+      hash: md5
+      md5: 7bffdf7ee60db3e1d6a7c70c2f128e38
+      size: 35938251
+    - path: data/HDFS_results/preprocessed/test_processed.csv
+      hash: md5
+      md5: cb5df67ecc6194c717ffbd3ede22f137
+      size: 555790291
+    - path: data/HDFS_results/preprocessed/train_processed.csv
+      hash: md5
+      md5: 86354d0b399fd8140bd0d40685f76a1a
+      size: 1641234082
+  model_building:
+    cmd: python src/model/model_building.py
+    deps:
+    - path: data/HDFS_results/preprocessed/test_processed.csv
+      hash: md5
+      md5: cb5df67ecc6194c717ffbd3ede22f137
+      size: 555790291
+    - path: data/HDFS_results/preprocessed/train_processed.csv
+      hash: md5
+      md5: 86354d0b399fd8140bd0d40685f76a1a
+      size: 1641234082
+    - path: src/model/model_building.py
+      hash: md5
+      md5: 24621df7d168397dde4d8f7eb7b75e90
+      size: 5252
+    outs:
+    - path: models/candidate_model.pkl
+      hash: md5
+      md5: 7714fadc036d975317ddd822957ff41d
+      size: 2828027945
+    - path: models/random_forest.pkl
+      hash: md5
+      md5: 3282fbac2f8d6c24adc3eef6e22bf892
+      size: 2828027657
+    - path: models/xgboost_model.pkl
+      hash: md5
+      md5: 07f19555fd61a9a49d34b6f15a557090
+      size: 193028
+    - path: results/candidate_metrics.json
+      hash: md5
+      md5: cd9dd7c0eedda7098df0b4b4570b9830
+      size: 75
+  model_evaluation:
+    cmd: python src/model/model_evaluation.py
+    deps:
+    - path: data/HDFS_results/preprocessed/test_processed.csv
+      hash: md5
+      md5: cb5df67ecc6194c717ffbd3ede22f137
+      size: 555790291
+    - path: models/random_forest.pkl
+      hash: md5
+      md5: 86bf3a1830ded83fec5cd2ef348acd13
+      size: 282885737
+    - path: src/model/model_evaluation.py
+      hash: md5
+      md5: 7404bebc589f4063f56b1f038efb11cc
+      size: 2909
+    outs:
+    - path: results/evaluation_metrics.json
+      hash: md5
+      md5: 448abb917ef65d193bf3c0acd77e2cc9
+      size: 156
+  model_registration:
+    cmd: python src/model/model_registration.py
+    deps:
+    - path: models/best_model.pkl
+      hash: md5
+      md5: 7714fadc036d975317ddd822957ff41d
+      size: 2828027945
+    - path: results/best_metrics.json
+      hash: md5
+      md5: cd9dd7c0eedda7098df0b4b4570b9830
+      size: 75
+    - path: src/model/model_registration.py
+      hash: md5
+      md5: 44b2b5fd661b7c386c1170875464fc78
+      size: 1252
+    outs:
+    - path: model_registry/
+      hash: md5
+      md5: a853bfad5b75893603bf69eb68adad01.dir
+      size: 2828027737
+      nfiles: 1
+  model_validation:
+    cmd: python src/model/model_validation.py
+    deps:
+    - path: models/candidate_model.pkl
+      hash: md5
+      md5: 7714fadc036d975317ddd822957ff41d
+      size: 2828027945
+    - path: results/candidate_metrics.json
+      hash: md5
+      md5: cd9dd7c0eedda7098df0b4b4570b9830
+      size: 75
+    - path: src/model/model_validation.py
+      hash: md5
+      md5: 4d6ea77bd45be8252ba3562e2087ae4f
+      size: 1423
+    outs:
+    - path: models/best_model.pkl
+      hash: md5
+      md5: 7714fadc036d975317ddd822957ff41d
+      size: 2828027945
+    - path: results/best_metrics.json
+      hash: md5
+      md5: cd9dd7c0eedda7098df0b4b4570b9830
+      size: 75
