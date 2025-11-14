@@ -19,7 +19,7 @@ from sklearn.metrics import (
 
 # === CONFIGURATION MLflow et AWS ===
 load_dotenv()
-mlflow.set_tracking_uri("http://ec2-3-96-152-110.ca-central-1.compute.amazonaws.com:5000/")
+mlflow.set_tracking_uri("http://ec2-35-183-15-39.ca-central-1.compute.amazonaws.com:5000/")
 mlflow.set_experiment("HDFS")
 
 # === CHEMINS ===
