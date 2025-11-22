@@ -12,7 +12,7 @@ import json
 load_dotenv()
 
 # Configuration de MLflow
-mlflow.set_tracking_uri("http://ec2-35-183-15-39.ca-central-1.compute.amazonaws.com:5000/")
+mlflow.set_tracking_uri("http://ec2-35-182-211-61.ca-central-1.compute.amazonaws.com:5000/")
 mlflow.set_experiment("HDFS")
 
 # =========================
